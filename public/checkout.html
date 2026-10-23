@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout | Dofol's</title><link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+  <script src="/js/common.js" defer></script><script src="/js/checkout.js" defer></script>
+</head>
+<body>
+  <div class="topbar"><div class="container"><span>Freshly baked, made for sharing</span><span data-business-address></span></div></div>
+  <header class="site-header"><div class="container nav-wrap">
+    <a class="brand" href="/"><span class="brand-icon">🍕</span><span><span data-business-name>Dofol's Freshly Baked Pizza</span><small>Hot from our oven</small></span></a>
+    <nav class="nav-links"><a href="/">Home</a><a href="/menu.html">Menu</a><a href="/cart.html">Cart</a></nav>
+    <div class="nav-actions"><a class="button small secondary" href="/cart.html">Edit cart</a></div>
+    <button class="menu-toggle" aria-label="Open menu">☰</button>
+  </div></header>
+  <main>
+    <section class="page-title"><div class="container"><span class="eyebrow" style="color:var(--red)">Almost there</span><h1>Checkout</h1><p>Prices and delivery charges are confirmed by the server.</p></div></section>
+    <section class="section"><div class="container checkout-layout">
+      <form id="checkout-form" class="panel form-stack">
+        <h2>Your details</h2>
+        <div class="form-grid">
+          <div class="field"><label for="customer-name">Full name *</label><input id="customer-name" name="customer_name" required maxlength="120" autocomplete="name"></div>
+          <div class="field"><label for="customer-phone">Mobile number *</label><input id="customer-phone" name="customer_phone" required maxlength="30" autocomplete="tel" placeholder="09xx xxx xxxx"></div>
+        </div>
+        <div class="field"><label>How would you like your order?</label><div id="order-type-options" class="choice-list"><div class="loading">Loading order options...</div></div></div>
+        <div class="field hidden" id="address-field">
+          <label for="delivery-address">Delivery address *</label>
+          <textarea id="delivery-address" name="delivery_address" rows="3" maxlength="500" placeholder="House number, street, barangay, municipality"></textarea>
+          <button id="delivery-location-button" class="button secondary" type="button">Calculate driving distance and fee</button>
+          <p id="delivery-location-status" class="help">Enter the full drop-off address, including barangay, municipality, and a nearby landmark. Review the mapped pin before placing the order.</p>
+        </div>
+        <div class="field"><label for="order-notes">Order notes (optional)</label><textarea id="order-notes" name="notes" rows="2" maxlength="500" placeholder="Anything we should know about your order?"></textarea></div>
+        <div class="field"><label>Payment method</label><div id="payment-options" class="choice-list"></div><div id="payment-instructions" class="notice hidden" style="text-align:left"></div></div>
+        <div class="field hidden" id="reference-field"><label for="reference-number">Maya payment reference number *</label><input id="reference-number" name="reference_number" maxlength="100" autocomplete="off"><small class="help">We will verify the Maya payment manually. Never enter your PIN, password, or OTP.</small></div>
+        <button id="place-order" class="button" type="submit">Place order</button>
+        <p class="help">By placing this order, you agree that an administrator may contact you to confirm details.</p>
+      </form>
+      <aside class="panel summary-panel"><h2>Order summary</h2><div id="checkout-items"></div>
+        <div class="summary-line"><span>Subtotal</span><strong id="checkout-subtotal">-</strong></div>
+        <div class="summary-line"><span>Delivery fee</span><strong id="checkout-delivery">-</strong></div>
+        <div class="summary-line total"><span>Total</span><strong id="checkout-total">-</strong></div>
+        <p id="checkout-message" class="help"></p>
+      </aside>
+    </div></section>
+  </main>
+  <footer class="site-footer"><div class="container"><h3 data-business-name>Dofol's Freshly Baked Pizza</h3><p data-business-address></p><div class="footer-bottom">© <span data-year></span> Dofol's Freshly Baked Pizza</div></div></footer>
+  <div class="toast" role="status"></div>
+</body>
+</html>

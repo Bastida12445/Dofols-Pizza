@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business settings | Dofol's Admin</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+  <script src="/js/common.js" defer></script>
+  <script src="/js/admin.js" defer></script>
+</head>
+<body class="admin-shell" data-admin-page="settings">
+  <header class="admin-top"><div class="container admin-nav">
+    <a class="brand" href="/admin/dashboard.html"><span class="brand-icon">🍕</span><span>Dofol's Admin</span></a>
+    <a href="/admin/dashboard.html">Dashboard</a><a href="/admin/products.html">Products</a>
+    <a href="/admin/orders.html">Orders</a><a href="/admin/payments.html">Payments</a>
+    <a href="/admin/reports.html">Reports</a><a class="active" href="/admin/settings.html">Settings</a>
+    <button class="button small secondary" data-logout>Sign out</button>
+  </div></header>
+  <main class="container admin-main">
+    <div class="admin-head"><div><h1>Business settings</h1><p class="muted">Configure how customers order and pay.</p></div></div>
+    <form id="settings-form" class="panel admin-form">
+      <h2>Business details</h2>
+      <div class="form-grid">
+        <div class="field"><label>Business name</label><input name="business_name" required maxlength="200"></div>
+        <div class="field"><label>Business phone</label><input name="business_phone" maxlength="200"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Business address</label><input name="business_address" required maxlength="200"></div>
+        <div class="field"><label>Business hours</label><input name="business_hours" maxlength="200"></div>
+      </div>
+
+      <h2>Pickup and delivery</h2>
+      <div class="inline">
+        <label><input type="checkbox" name="pickup_enabled"> Accept pickup orders</label>
+        <label><input type="checkbox" name="delivery_enabled"> Accept delivery orders</label>
+      </div>
+      <p class="help">Delivery uses Google Maps driving distance. The route distance is rounded up to the next whole kilometre, then the fee is calculated as base fee + (chargeable kilometres × per-kilometre fee).</p>
+      <div class="form-grid">
+        <div class="field"><label for="business-latitude">Shop map pin latitude *</label><input id="business-latitude" name="business_latitude" type="number" min="-90" max="90" step="any" placeholder="Example: 8.18"></div>
+        <div class="field"><label for="business-longitude">Shop map pin longitude *</label><input id="business-longitude" name="business_longitude" type="number" min="-180" max="180" step="any" placeholder="Example: 126.12"></div>
+      </div>
+      <p class="help">Enter the exact shop pin coordinates from Google Maps. Enable billing and the Routes API in Google Cloud, then add a server-side key restricted to Routes API in .env. Delivery remains unavailable until the pin, prices, service radius, and key are configured.</p>
+      <div class="form-grid">
+        <div class="field"><label for="delivery-base-fee">Base delivery fee (PHP)</label><input id="delivery-base-fee" name="delivery_base_fee" type="number" min="0" step="0.01" required></div>
+        <div class="field"><label for="delivery-fee-per-km">Fee per kilometre (PHP)</label><input id="delivery-fee-per-km" name="delivery_fee_per_km" type="number" min="0" step="0.01" required></div>
+        <div class="field"><label for="delivery-max-distance">Maximum driving distance (km)</label><input id="delivery-max-distance" name="delivery_max_distance_km" type="number" min="0" step="0.01" required></div>
+      </div>
+
+      <h2>Payment methods</h2>
+      <div class="admin-columns">
+        <div class="panel">
+          <h3>Automatic GCash checkout</h3>
+          <label><input type="checkbox" name="gcash_enabled"> Enable GCash</label>
+          <p class="help">Live payments only: use a PayMongo sk_live_ secret key and the signing secret from the live-mode webhook. Set APP_BASE_URL to your public HTTPS site before enabling GCash. Test keys are rejected.</p>
+        </div>
+        <div class="panel">
+          <h3>Maya manual payments</h3>
+          <label><input type="checkbox" name="maya_enabled"> Enable Maya</label>
+          <div class="field"><label>Customer instructions and merchant details</label><textarea name="maya_instructions" maxlength="1000" placeholder="Enter verified merchant details and payment instructions."></textarea></div>
+        </div>
+      </div>
+      <p class="help">Never enter wallet PINs, passwords, or OTPs. Put provider secrets only in the server .env file.</p>
+      <button class="button" type="submit">Save settings</button>
+    </form>
+  </main>
+  <div class="toast" role="status"></div>
+</body>
+</html>
